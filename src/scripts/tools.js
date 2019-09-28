@@ -1,5 +1,3 @@
-const Tools = (function () {
-
   function enableButton(button) {
     button.classList.add(`popup__button_valid`);
     button.classList.remove(`popup__button_invalid`);
@@ -29,6 +27,4 @@ const Tools = (function () {
     setTimeout(() => errorBlock.classList.add(`error-block_hide`), 3000);
   }
 
-  return {enableButton, disableButton, renderLoading, renderError};
-
-})();
+  export {enableButton, disableButton, renderLoading, renderError};

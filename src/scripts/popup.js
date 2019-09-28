@@ -1,6 +1,4 @@
-(function () {
-
-  class Popup {
+  export class Popup {
     constructor(popup) {
       this.popup = popup;
       this.popup.addEventListener(`click`, event => {
@@ -18,7 +16,3 @@
       this.popup.classList.remove(`popup_is-opened`);
     }
   }
-
-  window[`Popup`] = Popup;
-
-})();

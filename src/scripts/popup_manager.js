@@ -1,7 +1,7 @@
-(function () {
+  import {formUserRender} from '../scripts/user';
+  import {Popup} from '../scripts/popup';
 
-  const popupManager = document.querySelector(`.root`);
-  const {formUserRender} = User;
+  export const popupManager = document.querySelector(`.root`);
   const popup = new Popup(popupManager.querySelector(`.popup`));
 
   popupManager.addEventListener(`click`, function (event) {
@@ -20,5 +20,3 @@
       popup.open(changeAvatarLayer);
     } 
   });
-
-})();

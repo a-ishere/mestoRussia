@@ -1,7 +1,8 @@
-(function () {
+  import {UserConfig} from '../scripts/config';
+  import {ServerApi} from '../scripts/api';
+  import {renderError} from '../scripts/tools';
 
   const api = new ServerApi(UserConfig);
-  const {renderError} = Tools;
   const userInfo = api.getUserInfo();
 
   class Card {
@@ -59,7 +60,7 @@
     }
   }
 
-  class CardList {
+  export class CardList {
     constructor(container, startList) {
       this.container = container;
       this.startList = startList;
@@ -83,7 +84,6 @@
           likedBy.textContent = likes.reduce((prev, item, index) => {
             return index == 0 ? `${item.name}` : `${prev}, ${item.name}`;
           }, '');
-          console.log(likes, authorId);
         }
         card.setAttribute(`id`, id);
       })
@@ -94,8 +94,4 @@
       this.startList.forEach(item => 
         this.addCard(item.name, item.link, item._id, item.owner._id, item.likes));
     }
-  }
-
-  window[`CardList`] = CardList;
-  
-})();
+  } 

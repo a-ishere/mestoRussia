@@ -1,8 +1,10 @@
-(function () {
+  import {UserConfig} from '../scripts/config';
+  import {ServerApi} from '../scripts/api';
+  import {renderError} from '../scripts/tools';
+  import {getUserInfo} from '../scripts/user';
+  import {CardList} from '../scripts/cards';
 
   const api = new ServerApi(UserConfig);
-  const {renderError} = Tools;
-  const {getUserInfo} = User;
   const {name, about, avatar} = getUserInfo();
 
   api.getUserInfo()
@@ -18,5 +20,3 @@
       cardList.render();
     })
     .catch(renderError);
-
-})();
