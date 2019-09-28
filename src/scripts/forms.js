@@ -1,11 +1,15 @@
-const Forms = (function () {
+  import {renderError} from '../scripts/tools';
+  import {editUser, getUserInfo} from '../scripts/user';
+  import {enableButton, disableButton, renderLoading} from '../scripts/tools';
+  import {BasicValidation} from '../scripts/validation';
+  import {UserConfig} from '../scripts/config';
+  import {ServerApi} from '../scripts/api';
+  import {Popup} from '../scripts/popup';
+  import {CardList} from '../scripts/cards';
 
-  const {renderError} = Tools;
   const formAddCard = document.forms.new;
   const formUser = document.forms.user;
   const formAvatar = document.forms.avatar;
-  const {editUser, getUserInfo} = User; 
-  const {enableButton, disableButton, renderLoading} = Tools;
   const popup = new Popup(document.querySelector(`.popup`));
   const {isEmpty, isWrongLength, isNotLink, isValidText, isValidLink} = new BasicValidation();
   const api = new ServerApi(UserConfig);
@@ -95,4 +99,4 @@ const Forms = (function () {
     }
   });
 
-})();
+  export {formAddCard, formAvatar, formUser};

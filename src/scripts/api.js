@@ -1,6 +1,4 @@
-(function() {
-
-  class ServerApi {
+export class ServerApi {
     constructor(options) {
       this.baseUrl = options.baseUrl;
       this.headers = options.headers;
@@ -71,7 +69,3 @@
         .then(this.getResponseJson);
     }
   }
-      
-  window[`ServerApi`] = ServerApi;
-
-})();

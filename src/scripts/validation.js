@@ -1,9 +1,7 @@
-(function () {
-
   const ONE_SYMBOL = 1;
   const UPPER_LIMIT_LENGTH = 30;
 
-  class BasicValidation {
+  export class BasicValidation {
     constructor() {
       this.isValidText = field => !this.isEmpty(field) && !this.isWrongLength(field);
       this.isValidLink = field => !this.isEmpty(field) && !this.isNotLink(field); 
@@ -18,7 +16,3 @@
       return !field.validity.valid;
     }
   }
-
-  window[`BasicValidation`] = BasicValidation;
-
-})();

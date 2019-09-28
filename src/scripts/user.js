@@ -1,6 +1,8 @@
-const User = (function () {
-  
-  const {enableButton, renderLoading, renderError} = Tools;
+  import {enableButton, renderLoading, renderError} from '../scripts/tools';
+  import {Popup} from '../scripts/popup';
+  import {UserConfig} from '../scripts/config';
+  import {ServerApi} from '../scripts/api';
+
   const formUser = document.forms.user;
   const {name, about} = getUserInfo();
   const [nameField, aboutField, submit] = formUser.elements;
@@ -36,6 +38,4 @@ const User = (function () {
       .finally(renderLoading(formButton, `Сохранить`, false));
   }
 
-  return {editUser, getUserInfo, formUserRender};
-
-})();
+  export {editUser, getUserInfo, formUserRender};
