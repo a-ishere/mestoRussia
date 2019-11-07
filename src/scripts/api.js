@@ -1,71 +1,89 @@
-export class ServerApi {
-    constructor(options) {
-      this.baseUrl = options.baseUrl;
-      this.headers = options.headers;
+import { renderError } from '../scripts/tools';
+import { UserConfig } from './config';
+
+export default class ServerApi {
+    constructor() {
+        this.baseUrl = UserConfig.baseUrl;
+        this.headers = UserConfig.headers;
+        this.renderError = renderError;
     }
-    getResponseJson(res) {
-      if (res.ok) return res.json();
-      return Promise.reject(`${res.statusText}: ${res.status}`);
+
+    _getResponseJson(res) {
+        return res.ok ? res.json() : Promise.reject(`${res.statusText}: ${res.status}`);
     }
+
     getUserInfo() {
-      return fetch(`${this.baseUrl}/users/me`, {headers: this.headers})
-        .then(this.getResponseJson);
+        return fetch(`${this.baseUrl}/users/me`, { headers: this.headers })
+            .then(this._getResponseJson);
     }
+
     getInitialCards() {
-      return fetch(`${this.baseUrl}/cards`, {headers: this.headers})
-        .then(this.getResponseJson);
+        return fetch(`${this.baseUrl}/cards`, { headers: this.headers })
+            .then(this._getResponseJson);
     }
-    setCard(name, link) {
-      return fetch(`${this.baseUrl}/cards`, {
-        headers: this.headers,
-        method: `POST`,
-        body: JSON.stringify({
-          name: name,
-          link: link
+
+    setCard(name, link, instruction) {
+        return fetch(`${this.baseUrl}/cards`, {
+            headers: this.headers,
+            method: `POST`,
+            body: JSON.stringify({
+                name: name,
+                link: link
+            })
         })
-      })
-        .then(this.getResponseJson);
+            .then(this._getResponseJson)
+            .then(data => instruction.do(data))
+            .catch(this.renderError)
+            .finally(() => instruction.after());
     }
-    setUserInfo(name, about) {
-      return fetch(`${this.baseUrl}/users/me`, {
-        headers: this.headers,
-        method: `PATCH`,
-        body: JSON.stringify({
-          name: name,
-          about: about
+
+    setUserInfo(name, about, instruction) {
+        return fetch(`${this.baseUrl}/users/me`, {
+            headers: this.headers,
+            method: `PATCH`,
+            body: JSON.stringify({
+                name: name,
+                about: about
+            })
         })
-      })
-        .then(this.getResponseJson);
+            .then(this._getResponseJson)
+            .then(data => instruction.do(data))
+            .catch(this.renderError)
+            .finally(() => instruction.after());
     }
-    setUserAvatar(link) {
-      return fetch(`${this.baseUrl}/users/me/avatar`, {
-        headers: this.headers,
-        method: `PATCH`,
-        body: JSON.stringify({
-          avatar: link
+
+    setUserAvatar(link, instruction) {
+        return fetch(`${this.baseUrl}/users/me/avatar`, {
+            headers: this.headers,
+            method: `PATCH`,
+            body: JSON.stringify({
+                avatar: link
+            })
         })
-      })
-        .then(this.getResponseJson);
+            .then(this._getResponseJson)
+            .then(data => instruction.do(data))
+            .catch(this.renderError)
+            .finally(() => instruction.after());
     }
-    likeCard(id) {
-      return fetch(`${this.baseUrl}/cards/like/${id}`, {
-        headers: this.headers,
-        method: `PUT`
-      })
-        .then(this.getResponseJson);
+
+    likeCard(id, instruction) {
+        const method = instruction.liked == true ? `DELETE` : `PUT`;
+        return fetch(`${this.baseUrl}/cards/like/${id}`, {
+            headers: this.headers,
+            method: method
+        })
+            .then(this._getResponseJson)
+            .then(data => instruction.do(data))
+            .catch(this.renderError);
     }
-    deleteLikeCard(id) {
-      return fetch(`${this.baseUrl}/cards/like/${id}`, {
-        headers: this.headers,
-        method: `DELETE`
-      })
-        .then(this.getResponseJson);
+
+    deleteCard(id, instruction) {
+        return fetch(`${this.baseUrl}/cards/${id}`, {
+            headers: this.headers,
+            method: `DELETE`
+        })
+            .then(this._getResponseJson)
+            .then((data) => instruction.do(data))
+            .catch(this.renderError);
     }
-    deleteCard(id) {
-      return fetch(`${this.baseUrl}/cards/${id}`, {
-        headers: this.headers,
-        method: `DELETE`
-      })
-        .then(this.getResponseJson);
-    }
-  }
+}

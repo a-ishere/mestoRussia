@@ -4,12 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-    entry: [
-        './src/index.js',
-    ],
+    entry: {
+       main: './src/index.js',
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[chunkhash].js'
@@ -38,7 +37,7 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    (isDev ? 'style-loader' : MiniCssExtractPlugin.loader),
+                    MiniCssExtractPlugin.loader,
                     'css-loader', 
                     'postcss-loader'
                 ]
